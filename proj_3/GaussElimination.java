@@ -118,7 +118,7 @@ public class GaussElimination {
         }
         System.out.println();
     }
- 
+
     
     public void gaussElimination(){
         
@@ -210,9 +210,9 @@ public class GaussElimination {
     public static void main(String[] args) {
         GaussElimination gaussElimination = new GaussElimination(args[0], "./outputs/foata.txt");   
         System.out.println(args[0]);
-        gaussElimination.showMatrix();
-        gaussElimination.showCalculationsOrder();
+        // gaussElimination.showMatrix();
+        // gaussElimination.showCalculationsOrder();
         gaussElimination.gaussElimination();
-        gaussElimination.showMatrix();
+        // gaussElimination.showMatrix();
     }   
 }

@@ -7,6 +7,7 @@ with_file:
 	python nb.py $(filter-out $@,$(MAKECMDGOALS))
 	javac GaussElimination.java
 	java GaussElimination $(filter-out $@,$(MAKECMDGOALS))
+	rm -rf ./outputs/foata.txt
 	rm -rf *.class
 clean:
 	rm -rf ./outputs/*graph*
