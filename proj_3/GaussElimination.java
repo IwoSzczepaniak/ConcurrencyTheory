@@ -3,7 +3,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 
@@ -12,8 +14,10 @@ public class GaussElimination {
     int n;
     double[][] augmentedMatrix;
     ArrayList<ArrayList<String>> Orders;
-    double[][] factors;
-    double[][] tmpMatrix;
+    // double[][] factors;
+    Map<String, Double> fDict = new HashMap<>();
+    Map<String, Double> bDict = new HashMap<>();
+
 
 
     public GaussElimination(String matrix_filename, String foata_filename) {
@@ -36,7 +40,6 @@ public class GaussElimination {
             BufferedReader reader = new BufferedReader(new FileReader(matrix_filename));
             this.n = Integer.parseInt(reader.readLine());
             this.augmentedMatrix = new double[n][n + 1];
-            this.factors = new double[n][n+1];
             // System.out.println(n);
 
             for (int i = 0; i < this.n; i++) {
@@ -105,9 +108,8 @@ public class GaussElimination {
             //         }
             //     }
             // }
-            this.tmpMatrix = deepCopy(this.augmentedMatrix);
             Calculator calculator;
-
+            String key;
             for(ArrayList<String> foataClass: this.Orders){
                 for(String el : foataClass){
 
@@ -119,14 +121,16 @@ public class GaussElimination {
                     switch (toDo) {
                         case 'A':
                             calculator = new ACalculator(augmentedMatrix[k][i], augmentedMatrix[i][i]);
-                            factors[i][k] = calculator.calc();
+                            key = el.substring(2, 3) + el.substring(6, 7);
+                            fDict.put(key, calculator.calc());
                             break;
                         case 'B':
-                            calculator = new BCalculator(augmentedMatrix[i][j], factors[i][k]);
-                            tmpMatrix[i][j] = calculator.calc(); // tmp się nadpisuje i tu jest błąd
+                            key = el.substring(2, 3) + el.substring(6, 7);
+                            calculator = new BCalculator(augmentedMatrix[i][j], fDict.get(key));
+                            bDict.put(el.substring(2, 6), calculator.calc()); 
                             break;
                         case 'C':
-                            calculator = new CCalculator(augmentedMatrix[k][j], tmpMatrix[i][j]);
+                            calculator = new CCalculator(augmentedMatrix[k][j], bDict.get(el.substring(2, 6)));
                             augmentedMatrix[i][j] = calculator.calc(); 
                             break;
                         default:
