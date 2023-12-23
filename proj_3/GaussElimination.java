@@ -2,9 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -127,11 +125,11 @@ public class GaussElimination {
                         case 'B':
                             key = el.substring(2, 3) + el.substring(6, 7);
                             calculator = new BCalculator(augmentedMatrix[i][j], fDict.get(key));
-                            bDict.put(el.substring(2, 6), calculator.calc()); 
+                            bDict.put(el.substring(2, 7), calculator.calc()); 
                             break;
                         case 'C':
-                            calculator = new CCalculator(augmentedMatrix[k][j], bDict.get(el.substring(2, 6)));
-                            augmentedMatrix[i][j] = calculator.calc(); 
+                            calculator = new CCalculator(augmentedMatrix[k][j], bDict.get(el.substring(2, 7)));
+                            augmentedMatrix[k][j] = calculator.calc(); 
                             break;
                         default:
                             throw new IllegalStateException("Unexpected value: " + toDo);
@@ -142,15 +140,6 @@ public class GaussElimination {
 
         return;
     }
-
-    private static double[][] deepCopy(double[][] original) {
-        double[][] copy = new double[original.length][];
-        for (int i = 0; i < original.length; i++) {
-            copy[i] = Arrays.copyOf(original[i], original[i].length);
-        }
-        return copy;
-    }
-
     
     public static void main(String[] args) {
         GaussElimination gaussElimination = new GaussElimination("input_.txt", "foata.txt");   
