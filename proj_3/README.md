@@ -4,7 +4,7 @@
 
 This project implements parallel Gauss Elimination using Foata norm. In this project, we apply the Foata norm to parallelize the Gauss elimination algorithm, which is used to solve systems of linear equations.
 
-## Install the required dependencies:
+## Required dependencies:
 
     1. Python
     - graphviz
@@ -27,7 +27,7 @@ This project implements parallel Gauss Elimination using Foata norm. In this pro
 
 ## Usage
 
-1. Run the program:
+Run the program:
 
     make - automatically run the program with the default inputs
 
