@@ -36,20 +36,20 @@ def calc_alpabet(n, m):
     return alph
 
 def calc_transactions(alph):
+    ''' funcrion simmilar to class technique'''
     transactions = []
     for i,el_prev in enumerate(alph): 
         for k in range(i+1, len(alph)):
             el_next = alph[k]
 
             cond1 = (el_prev[1:] == el_next[1:]) # ex. B_1,1,2 -> C_1,1,2
-            cond2 = (el_prev[4]==el_next[2] and el_prev[2] != el_next[2] and el_prev[0] != 'B') # ex. C_1,2,2 -> A_2,3   
+            cond2 = (el_prev[4]==el_next[2] and el_prev[2] != el_next[2] and el_prev[0] != 'B' and el_next[0] == 'A') # ex. C_1,2,2 -> A_2,3   
             cond3 = (el_prev[4] == "*" and el_prev[2] == el_next[2] and el_prev[6] == el_next[6] and el_next[0] == 'B') # ex. A_1,2->B_1,1,2
 
             if  cond1 or cond2 or cond3:                                                         
                 if f"{el_prev} <- {el_next}" not in transactions:
                     transactions.append(f"{el_next} <- {el_prev}")
-                if cond2: # makes it possible not to draw too many lines as in class
-                    break
+
     return transactions
 
 def create_graph(transactions):
@@ -67,14 +67,14 @@ def create_graph(transactions):
         G[next].append(prev)
     return D, G
 
-def vis_graph(graph, extr_str = ""):
+def vis_graph(graph, name,extr_str = ""):
     dot = graphviz.Digraph(comment='The Round Table')
     for key in graph:
         dot.node(key)
         for val in graph[key]:
             dot.edge(key, val)
     dot.format = 'png'
-    dot.render(filename=f"{extr_str}graph_size_{n}", view=True)
+    dot.render(filename=f"./outputs/{extr_str}graph_{name}", view=True)
 
 def calculate_vals(graph, start_point:str, vals:dict):
     round_nr = 0
@@ -119,7 +119,7 @@ if __name__ == "__main__":
     if len(sys.argv) == 2:
         input_file = sys.argv[1]
     else:
-        input_file = "input_.txt"
+        input_file = "input_.xtt"
 
     n, m, matrix = get_input(input_file)
 
@@ -129,7 +129,7 @@ if __name__ == "__main__":
 
     dep, graph = create_graph(transactions)
 
-    vis_graph(graph) # before deletation
+    # vis_graph(graph, input_file[-5], "not_deleted_edges_") # before extra deletation
 
     vals = {key: 0 for key in graph}
     for key in graph:
@@ -139,7 +139,7 @@ if __name__ == "__main__":
     pot = find_diff_edges(graph, vals)
 
     find_cycles(graph, vals)
-    vis_graph(graph, "deleted_edges_") # after deletation
+    vis_graph(graph, input_file[-5]) # after deletation
 
     foata = calculate_foata(graph, vals)
     
@@ -147,7 +147,7 @@ if __name__ == "__main__":
     for f_class in foata:
         print(f_class)
 
-    with open("foata.txt", "w") as file:
+    with open("./outputs/foata.txt", "w") as file:
         file.write(f"{len(foata)}\n")
         for f_class in foata:
             for el in f_class:

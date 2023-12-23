@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,12 +23,14 @@ public class GaussElimination {
     private Lock factorDictLock = new ReentrantLock();
     private Lock bResDictLock = new ReentrantLock();
     private Lock[][] augmentedMatrixLocks;
+    private char task;
 
 
 
     public GaussElimination(String matrix_filename, String foata_filename) {
         inputMatrix(matrix_filename);
         cacluationsOrder(foata_filename);
+        this.task = matrix_filename.charAt(12);
     }
 
     public void showMatrix(){
@@ -37,6 +41,24 @@ public class GaussElimination {
             System.out.println();
         }
         System.out.println();
+    }
+
+    public void saveMatrixToFile(){
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("./outputs/output_" + this.task + ".txt"));
+            for (int i = 0; i < this.n; i++) {
+                for (int j = 0; j <=this.n; j++) {
+                    writer.write(this.augmentedMatrix[i][j]+"\t");
+                }
+                writer.write("\n");
+            }
+            writer.write("\n");
+            writer.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+                
     }
 
     public void inputMatrix(String matrix_filename) {
@@ -178,6 +200,7 @@ public class GaussElimination {
                 }
             }finally{
                 executor.shutdown();
+                saveMatrixToFile();
             }
 
         }
@@ -185,7 +208,8 @@ public class GaussElimination {
     }
     
     public static void main(String[] args) {
-        GaussElimination gaussElimination = new GaussElimination("input_.txt", "foata.txt");   
+        GaussElimination gaussElimination = new GaussElimination(args[0], "./outputs/foata.txt");   
+        System.out.println(args[0]);
         gaussElimination.showMatrix();
         gaussElimination.showCalculationsOrder();
         gaussElimination.gaussElimination();
