@@ -148,6 +148,7 @@ if __name__ == "__main__":
         print(f_class)
 
     with open("foata.txt", "w") as file:
+        file.write(f"{len(foata)}\n")
         for f_class in foata:
             for el in f_class:
                 file.write(el)
