@@ -107,7 +107,7 @@ public class GaussElimination {
             //     }
             // }
             Calculator calculator;
-            String key;
+            String fkey;
             for(ArrayList<String> foataClass: this.Orders){
                 for(String el : foataClass){
 
@@ -118,13 +118,13 @@ public class GaussElimination {
                     
                     switch (toDo) {
                         case 'A':
+                            fkey = el.substring(2, 3) + el.substring(6, 7);
                             calculator = new ACalculator(augmentedMatrix[k][i], augmentedMatrix[i][i]);
-                            key = el.substring(2, 3) + el.substring(6, 7);
-                            fDict.put(key, calculator.calc());
+                            fDict.put(fkey, calculator.calc());
                             break;
                         case 'B':
-                            key = el.substring(2, 3) + el.substring(6, 7);
-                            calculator = new BCalculator(augmentedMatrix[i][j], fDict.get(key));
+                            fkey = el.substring(2, 3) + el.substring(6, 7);
+                            calculator = new BCalculator(augmentedMatrix[i][j], fDict.get(fkey));
                             bDict.put(el.substring(2, 7), calculator.calc()); 
                             break;
                         case 'C':
