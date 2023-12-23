@@ -8,4 +8,5 @@ jav:
 
 clean:
 	rm -rf *graph*
+	rm -rf *.class
 
